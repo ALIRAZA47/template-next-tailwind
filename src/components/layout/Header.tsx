@@ -1,49 +1,51 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
-import { useTheme } from '@/hooks/useTheme'
-import { ThemeMode } from '@/types'
+import { useState } from 'react'
+import { Bell, Search } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
-import { Separator } from '@/components/ui/Separator'
+import { NotificationsPanel } from '@/components/common/NotificationsPanel'
 
 export function Header() {
-  const { theme, setTheme } = useTheme()
-
-  const toggleTheme = () => {
-    const newTheme = theme === ThemeMode.DARK ? ThemeMode.LIGHT : ThemeMode.DARK
-    setTheme(newTheme)
-  }
+  const [showNotifications, setShowNotifications] = useState(false)
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-card px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-card/95 px-6 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="flex items-center gap-4">
-        <h2 className="text-lg font-semibold">Welcome back!</h2>
+        <div className="hidden md:block">
+          <h2 className="text-lg font-semibold">Welcome back!</h2>
+          <p className="text-sm text-muted-foreground">Have a great day ahead</p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* Theme Toggle */}
+      <div className="flex items-center gap-2">
+        {/* Search Button */}
         <Button
           variant="ghost"
           size="icon"
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
+          className="relative hover:bg-accent transition-colors"
+          aria-label="Search"
         >
-          {theme === ThemeMode.DARK ? (
-            <Sun className="h-5 w-5" />
-          ) : (
-            <Moon className="h-5 w-5" />
-          )}
+          <Search className="h-5 w-5" />
         </Button>
 
-        <Separator orientation="vertical" className="h-6" />
-
-        {/* User Avatar */}
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
+        {/* Notifications */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative hover:bg-accent transition-colors"
+          aria-label="Notifications"
+          onClick={() => setShowNotifications(true)}
+        >
+          <Bell className="h-5 w-5" />
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
+        </Button>
       </div>
+
+      {/* Notifications Panel */}
+      <NotificationsPanel
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+      />
     </header>
   )
 }
