@@ -1,12 +1,20 @@
 import { apiClient } from './client'
 import { API_ENDPOINTS } from '@/constants/api.const'
-import type { LoginDto, AuthResponse, User } from '@/types'
+import type { LoginDto, AuthResponse, User, CreateUserDto } from '@/types'
 
 export class AuthService {
   static async login(credentials: LoginDto): Promise<AuthResponse> {
     const response = await apiClient.post<AuthResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
       credentials
+    )
+    return response.data
+  }
+
+  static async signup(data: CreateUserDto): Promise<AuthResponse> {
+    const response = await apiClient.post<AuthResponse>(
+      API_ENDPOINTS.AUTH.SIGNUP,
+      data
     )
     return response.data
   }

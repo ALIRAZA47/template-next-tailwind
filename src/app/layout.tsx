@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { AppLayout } from '@/components/layout/AppLayout'
+import { ConfirmationDialog } from '@/components/common/ConfirmationDialog'
+import { GlobalLoader } from '@/components/common/GlobalLoader'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,6 +23,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AppLayout>{children}</AppLayout>
+          <GlobalLoader />
+          <ConfirmationDialog />
         </ThemeProvider>
       </body>
     </html>
